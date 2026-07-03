@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://df7xxy7wxxx"]
+
+[ext_resource type="PackedScene" uid="uid://pixelmanxx1" path="res://Scenes/PixelMan.tscn" id="1_world1"]
+[ext_resource type="PackedScene" uid="uid://mapui123" path="res://Scenes/MapUI.tscn" id="4_mapui"]
+[ext_resource type="PackedScene" uid="uid://char123" path="res://Scenes/CharacterCreationMenu.tscn" id="5_char"]
+[ext_resource type="PackedScene" uid="uid://pausemenu123" path="res://Scenes/PauseMenu.tscn" id="6_pause"]
+[ext_resource type="PackedScene" path="res://Scenes/HUD.tscn" id="7_hud"]
+[ext_resource type="PackedScene" uid="uid://shopui123" path="res://Scenes/ShopUI.tscn" id="8_shop"]
+[ext_resource type="PackedScene" uid="uid://fishui123" path="res://Scenes/FishingUI.tscn" id="9_fish"]
+[ext_resource type="PackedScene" uid="uid://buildui123" path="res://Scenes/BuildUI.tscn" id="10_build"]
+[ext_resource type="PackedScene" uid="uid://df7xxy7waab4" path="res://Scenes/ParallaxBackground.tscn" id="bg_scene"]
+[ext_resource type="Texture2D" path="res://Assets/trytilerealistic_atlas.png" id="2_tiles"]
+[ext_resource type="Script" path="res://Scripts/WorldGenerator.cs" id="3_wg"]
+[ext_resource type="TileSet" uid="uid://c3q8f8x33abc" path="res://Assets/AorakiTileSet.tres" id="4_aoraki"]
+
+[node name="World" type="Node2D"]
+
+[node name="ParallaxBackground" parent="." instance=ExtResource("bg_scene")]
+
+[node name="WorldGenerator" type="Node" parent="." node_paths=PackedStringArray("TerrainLayer")]
+script = ExtResource("3_wg")
+TerrainLayer = NodePath("../TileMapLayer")
+
+[node name="Players" type="Node2D" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Players")
+spawn_limit = 4
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("4_aoraki")
+
+[node name="FloatingCamera" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+position = Vector2(0, 0)
+
+[node name="MapUI" parent="." instance=ExtResource("4_mapui")]
+
+[node name="CharacterCreationMenu" parent="." instance=ExtResource("5_char")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("6_pause")]
+
+[node name="HUD" parent="." instance=ExtResource("7_hud")]
+
+[node name="ShopUI" parent="." instance=ExtResource("8_shop")]
+
+[node name="FishingUI" parent="." instance=ExtResource("9_fish")]
+
+[node name="BuildUI" parent="." instance=ExtResource("10_build")]

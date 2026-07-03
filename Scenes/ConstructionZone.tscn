@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://const0one123"]
+
+[ext_resource type="Script" path="res://Scripts/ConstructionZone.cs" id="1_scr"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/ConstructionZone.png" id="3_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cz"]
+size = Vector2(128, 16)
+
+[node name="ConstructionZone" type="Area2D"]
+script = ExtResource("1_scr")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -64.0
+offset_top = -40.0
+offset_right = 64.0
+offset_bottom = -17.0
+text = "Plot for Sale"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -8)
+shape = SubResource("RectangleShape2D_cz")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_tex")
+offset = Vector2(0, -24)

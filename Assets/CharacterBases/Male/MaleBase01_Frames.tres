@@ -1,0 +1,61 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://df7xxy7waab"]
+
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_002.png" id="1_02"]
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_003.png" id="1_03"]
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_004.png" id="1_04"]
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_005.png" id="1_05"]
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_006.png" id="1_06"]
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_007.png" id="1_07"]
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_012.png" id="1_12"]
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_016.png" id="1_16"]
+[ext_resource type="Texture2D" path="res://Assets/CharacterBases/Male/Male_Base01/frame_017.png" id="1_17"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_16")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_17")
+}],
+"loop": 1,
+"name": &"climb",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_02")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_03")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_12")
+}],
+"loop": 0,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_04")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_05")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_06")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_07")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 8.0
+}]

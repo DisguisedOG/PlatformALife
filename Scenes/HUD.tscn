@@ -1,0 +1,82 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/HUD.cs" id="1_s3jbq"]
+[ext_resource type="Texture2D" path="res://Assets/MAINUI/frame_000_cropped.png" id="2_c3eba"]
+[ext_resource type="Texture2D" path="res://Assets/MAINUI/frame_016_cropped.png" id="3_g8s2e"]
+[ext_resource type="Texture2D" path="res://Assets/MAINUI/frame_001_cropped.png" id="4_t385i"]
+
+[node name="HUD" type="CanvasLayer" unique_id=252998745]
+script = ExtResource("1_s3jbq")
+
+[node name="StatusBar" type="TextureRect" parent="." unique_id=1260838906]
+custom_minimum_size = Vector2(451, 153)
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 467.0
+offset_bottom = 169.0
+mouse_filter = 2
+texture = ExtResource("2_c3eba")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HealthLabel" type="Label" parent="StatusBar" unique_id=176795374]
+layout_mode = 0
+offset_left = 230.0
+offset_top = 46.0
+offset_right = 230.0
+offset_bottom = 46.0
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "HP: 100/100"
+
+[node name="Hotbar" type="TextureRect" parent="." unique_id=2108642683]
+custom_minimum_size = Vector2(556, 74)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 362.0
+offset_top = 630.0
+offset_right = 918.0
+offset_bottom = 704.0
+mouse_filter = 2
+texture = ExtResource("3_g8s2e")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Panel" type="Control" parent="." unique_id=1791090663]
+custom_minimum_size = Vector2(570, 701)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 355.0
+offset_top = 9.5
+offset_right = 925.0
+offset_bottom = 710.5
+
+[node name="Background" type="TextureRect" parent="Panel" unique_id=634305768]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("4_t385i")
+expand_mode = 1
+
+[node name="GoldLabel" type="Label" parent="Panel" unique_id=1572579394]
+layout_mode = 0
+offset_left = 400.0
+offset_top = 24.0
+offset_right = 400.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(1, 0.84, 0, 1)
+text = "Gold: 0"
+
+[node name="GridContainer" type="GridContainer" parent="Panel" unique_id=1423324771]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 112.0
+offset_right = 546.0
+offset_bottom = 677.0
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 5

@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://shopk123"]
+
+[ext_resource type="Script" path="res://Scripts/Shopkeeper.cs" id="1_scr"]
+[ext_resource type="Texture2D" path="res://Assets/Sprites/Shopkeeper.png" id="3_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rn"]
+size = Vector2(48, 64)
+
+[node name="Shopkeeper" type="Area2D"]
+script = ExtResource("1_scr")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -23.0
+offset_top = -88.0
+offset_right = 23.0
+offset_bottom = -65.0
+text = "Shop"
+horizontal_alignment = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -32)
+shape = SubResource("RectangleShape2D_rn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_tex")
+offset = Vector2(0, -48)

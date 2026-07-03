@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://mapui123"]
+
+[ext_resource type="Script" path="res://Scripts/MapUI.cs" id="1_scr"]
+
+[node name="MapUI" type="CanvasLayer"]
+script = ExtResource("1_scr")
+
+[node name="MapNameLabel" type="Label" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 300.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 24
+text = "Map Name Here"

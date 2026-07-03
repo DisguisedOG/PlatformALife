@@ -1,0 +1,167 @@
+[gd_scene format=3 uid="uid://c7t1u62h6c36p"]
+
+[ext_resource type="Script" uid="uid://ub5t7jnxqq1u" path="res://Scripts/MainMenu.cs" id="1_m"]
+[ext_resource type="Theme" uid="uid://cx1g6n2d6xxxx" path="res://UITheme.tres" id="2_theme"]
+
+[node name="MainMenu" type="Control" unique_id=248197687]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_m")
+
+[node name="MainButtons" type="VBoxContainer" parent="." unique_id=1907259185]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = 80.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NewWorldBtn" type="Button" parent="MainButtons" unique_id=704715207]
+layout_mode = 2
+text = "New World"
+
+[node name="LoadWorldBtn" type="Button" parent="MainButtons" unique_id=447621631]
+layout_mode = 2
+text = "Load World"
+
+[node name="HostToggle" type="CheckButton" parent="MainButtons" unique_id=1156765791]
+layout_mode = 2
+text = "Host Multiplayer Server"
+
+[node name="JoinGameBtn" type="Button" parent="MainButtons" unique_id=1079945936]
+layout_mode = 2
+text = "Join Game (Localhost)"
+
+[node name="OptionsBtn" type="Button" parent="MainButtons" unique_id=645600584]
+layout_mode = 2
+text = "Options"
+
+[node name="ExitBtn" type="Button" parent="MainButtons" unique_id=1933200862]
+layout_mode = 2
+text = "Exit"
+
+[node name="WorldCreationPanel" type="Panel" parent="." unique_id=2135678583]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -120.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WorldCreationPanel" unique_id=759848031]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="WorldCreationPanel/VBoxContainer" unique_id=2087590828]
+layout_mode = 2
+text = "Create New World"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="WorldCreationPanel/VBoxContainer" unique_id=2115960973]
+layout_mode = 2
+
+[node name="WorldNameInput" type="LineEdit" parent="WorldCreationPanel/VBoxContainer" unique_id=534290252]
+layout_mode = 2
+placeholder_text = "World Name"
+
+[node name="SeedInput" type="LineEdit" parent="WorldCreationPanel/VBoxContainer" unique_id=1286860382]
+layout_mode = 2
+placeholder_text = "Seed (Optional)"
+
+[node name="GameModeOption" type="OptionButton" parent="WorldCreationPanel/VBoxContainer" unique_id=626574636]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Normal"
+popup/item_0/id = 0
+popup/item_1/text = "Sandbox"
+popup/item_1/id = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="WorldCreationPanel/VBoxContainer" unique_id=1958233391]
+layout_mode = 2
+alignment = 1
+
+[node name="CreateBtn" type="Button" parent="WorldCreationPanel/VBoxContainer/HBoxContainer" unique_id=1809592875]
+layout_mode = 2
+text = "Create"
+
+[node name="CancelBtn" type="Button" parent="WorldCreationPanel/VBoxContainer/HBoxContainer" unique_id=962812516]
+layout_mode = 2
+text = "Cancel"
+
+[node name="LoadWorldPanel" type="Panel" parent="." unique_id=1434594228]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -120.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LoadWorldPanel" unique_id=1559487083]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="LoadWorldPanel/VBoxContainer" unique_id=1148908362]
+layout_mode = 2
+text = "Load World"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="LoadWorldPanel/VBoxContainer" unique_id=145904881]
+layout_mode = 2
+
+[node name="SaveList" type="ItemList" parent="LoadWorldPanel/VBoxContainer" unique_id=279367589]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LoadWorldPanel/VBoxContainer" unique_id=372284544]
+layout_mode = 2
+alignment = 1
+
+[node name="LoadBtn" type="Button" parent="LoadWorldPanel/VBoxContainer/HBoxContainer" unique_id=71477955]
+layout_mode = 2
+text = "Load"
+
+[node name="CancelLoadBtn" type="Button" parent="LoadWorldPanel/VBoxContainer/HBoxContainer" unique_id=683957126]
+layout_mode = 2
+text = "Cancel"

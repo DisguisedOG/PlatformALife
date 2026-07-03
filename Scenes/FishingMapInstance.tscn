@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://fishingmap123"]
+
+[ext_resource type="Script" path="res://Scripts/FishingMapInstance.cs" id="1_scr"]
+[ext_resource type="PackedScene" uid="uid://df7xxy7waab4" path="res://Scenes/ParallaxBackground.tscn" id="bg_scene"]
+[ext_resource type="Script" path="res://Scripts/FishingExitPortal.cs" id="3_scr"]
+[ext_resource type="PackedScene" path="res://Scenes/FishingSpot.tscn" id="4_spot"]
+[ext_resource type="Texture2D" path="res://Assets/trytilerealistic_atlas.png" id="2_tiles"]
+[ext_resource type="PackedScene" path="res://Scenes/FishingUI.tscn" id="9_fish"]
+[ext_resource type="PackedScene" path="res://Scenes/PauseMenu.tscn" id="6_pause"]
+
+[ext_resource type="TileSet" uid="uid://c3q8f8x33abc" path="res://Assets/AorakiTileSet.tres" id="10_aoraki"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_exit"]
+size = Vector2(64, 128)
+
+[node name="FishingMapInstance" type="Node2D"]
+script = ExtResource("1_scr")
+
+[node name="ParallaxBackground" parent="." instance=ExtResource("bg_scene")]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("10_aoraki")
+
+[node name="Players" type="Node2D" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Players")
+spawn_limit = 4
+
+[node name="ExitPortal" type="Area2D" parent="."]
+position = Vector2(-160, 0)
+collision_layer = 0
+collision_mask = 1
+script = ExtResource("3_scr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitPortal"]
+position = Vector2(0, -64)
+shape = SubResource("RectangleShape2D_exit")
+
+[node name="ColorRect" type="ColorRect" parent="ExitPortal"]
+offset_left = -32.0
+offset_top = -128.0
+offset_right = 32.0
+offset_bottom = 0.0
+color = Color(1, 0.5, 0.2, 0.5)
+
+[node name="FishingSpot1" parent="." instance=ExtResource("4_spot")]
+position = Vector2(160, 0)
+
+[node name="FishingSpot2" parent="." instance=ExtResource("4_spot")]
+position = Vector2(256, 0)
+
+[node name="FishingSpot3" parent="." instance=ExtResource("4_spot")]
+position = Vector2(352, 0)
+
+[node name="World" type="Node" parent="."]
+
+[node name="FishingUI" parent="World" instance=ExtResource("9_fish")]
+
+[node name="PauseMenu" parent="World" instance=ExtResource("6_pause")]

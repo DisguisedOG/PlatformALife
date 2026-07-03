@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://char123"]
+
+[ext_resource type="Script" path="res://Scripts/CharacterCreationMenu.cs" id="1_ccm"]
+[ext_resource type="Theme" uid="uid://cx1g6n2d6xxxx" path="res://UITheme.tres" id="2_theme"]
+
+[node name="CharacterCreationMenu" type="CanvasLayer"]
+script = ExtResource("1_ccm")
+
+[node name="Panel" type="Panel" parent="."]
+theme = ExtResource("2_theme")
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -120.0
+offset_right = 150.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Create Your Character"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="NameInput" type="LineEdit" parent="Panel/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Character Name"
+
+[node name="SexOption" type="OptionButton" parent="Panel/VBoxContainer"]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Male"
+popup/item_1/text = "Female"
+popup/item_1/id = 1
+
+[node name="HairOption" type="OptionButton" parent="Panel/VBoxContainer"]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Short Hair"
+popup/item_1/text = "Long Hair"
+popup/item_1/id = 1
+popup/item_2/text = "Spiky Hair"
+popup/item_2/id = 2
+
+[node name="CreateBtn" type="Button" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Create"
