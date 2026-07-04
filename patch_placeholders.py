@@ -46,42 +46,42 @@ def update_tscn(filepath, tex_path, remove_nodes, sprite_name="Sprite2D", offset
 # Define tasks
 tasks = [
     (
-        r'd:\KiwiKing Studios\SimPixelz\Scenes\Structure_House.tscn', 
+        r'd:\KiwiKing Studios\PlatformALife\Scenes\Structure_House.tscn', 
         'res://Assets/Sprites/Structure_House.png', 
         ['ColorRect', 'Door', 'Roof'],
         'Sprite2D',
         'Vector2(0, -96)'
     ),
     (
-        r'd:\KiwiKing Studios\SimPixelz\Scenes\Shopkeeper.tscn', 
+        r'd:\KiwiKing Studios\PlatformALife\Scenes\Shopkeeper.tscn', 
         'res://Assets/Sprites/Shopkeeper.png', 
         ['ColorRect'],
         'Sprite2D',
         'Vector2(0, -48)'
     ),
     (
-        r'd:\KiwiKing Studios\SimPixelz\Scenes\Structure_FishermansDock.tscn', 
+        r'd:\KiwiKing Studios\PlatformALife\Scenes\Structure_FishermansDock.tscn', 
         'res://Assets/Sprites/FishermansDock.png', 
         ['ColorRect'],
         'Sprite2D',
         'Vector2(0, -32)'
     ),
     (
-        r'd:\KiwiKing Studios\SimPixelz\Scenes\ConstructionZone.tscn', 
+        r'd:\KiwiKing Studios\PlatformALife\Scenes\ConstructionZone.tscn', 
         'res://Assets/Sprites/ConstructionZone.png', 
         ['ColorRect'],
         'Sprite2D',
         'Vector2(0, -24)'
     ),
     (
-        r'd:\KiwiKing Studios\SimPixelz\Scenes\Portal.tscn', 
+        r'd:\KiwiKing Studios\PlatformALife\Scenes\Portal.tscn', 
         'res://Assets/Sprites/Portal.png', 
         ['ColorRect'],
         'Sprite2D',
         'Vector2(0, -64)'
     ),
     (
-        r'd:\KiwiKing Studios\SimPixelz\Scenes\ResourceNode.tscn', 
+        r'd:\KiwiKing Studios\PlatformALife\Scenes\ResourceNode.tscn', 
         'res://Assets/Sprites/Resource_Wood.png', 
         ['ColorRect'],
         'Sprite2D',

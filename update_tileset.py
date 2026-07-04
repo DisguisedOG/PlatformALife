@@ -1,6 +1,6 @@
 import os
 
-tres_path = r'd:\KiwiKing Studios\SimPixelz\Assets\AorakiTileSet.tres'
+tres_path = r'd:\KiwiKing Studios\PlatformALife\Assets\AorakiTileSet.tres'
 
 new_source = '[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_aoraki"]\n'
 new_source += 'texture = ExtResource("1_tex")\n'

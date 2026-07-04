@@ -1,6 +1,6 @@
 import os
 
-filepath = r'd:\KiwiKing Studios\SimPixelz\Scripts\WorldGenerator.cs'
+filepath = r'd:\KiwiKing Studios\PlatformALife\Scripts\WorldGenerator.cs'
 
 with open(filepath, 'r') as f:
     content = f.read()

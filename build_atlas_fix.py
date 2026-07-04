@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-assets_dir = r'd:\KiwiKing Studios\SimPixelz\Assets'
+assets_dir = r'd:\KiwiKing Studios\PlatformALife\Assets'
 seasonal_dir = os.path.join(assets_dir, 'Tilesets', 'Seasonal Tilesets')
 
 biomes = [

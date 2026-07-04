@@ -3,8 +3,8 @@ from PIL import Image
 import numpy as np
 import cv2
 
-src_path = r'd:\KiwiKing Studios\SimPixelz\Assets\Tilesets\NZ_tileset2.png'
-out_dir = r'd:\KiwiKing Studios\SimPixelz\Assets\Sprites\Foliage'
+src_path = r'd:\KiwiKing Studios\PlatformALife\Assets\Tilesets\NZ_tileset2.png'
+out_dir = r'd:\KiwiKing Studios\PlatformALife\Assets\Sprites\Foliage'
 os.makedirs(out_dir, exist_ok=True)
 
 img = Image.open(src_path).convert('RGBA')
