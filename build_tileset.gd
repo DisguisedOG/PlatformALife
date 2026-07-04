@@ -47,7 +47,7 @@ func _init():
 
 func _create_tile_if_valid(source: TileSetAtlasSource, position: Vector2i, columns: int, rows: int) -> bool:
     if position.x < 0 or position.x >= columns or position.y < 0 or position.y >= rows:
-        print_error("Skipping invalid atlas tile coordinate: %s" % position)
+        printerr("Skipping invalid atlas tile coordinate: %s" % position)
         return false
     source.create_tile(position)
     return true
