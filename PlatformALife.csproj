@@ -4,4 +4,8 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>PlatformALife</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Scripts/WaystoneNavigation.cs" />
+  </ItemGroup>
 </Project>

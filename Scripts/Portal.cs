@@ -16,6 +16,7 @@ public partial class Portal : Area2D
     {
         BodyEntered += OnBodyEntered;
         BodyExited += OnBodyExited;
+        AssetValidator.ValidatePortal(this);
     }
 
     private void OnBodyEntered(Node2D body)

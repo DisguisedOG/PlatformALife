@@ -26,6 +26,7 @@ public partial class GameManager : Node
 		}
 
 		GD.Print("GameManager Initialized.");
+		JobSystem.InitializeJobData(LoadedSaveData);
 	}
 
 	public async void LoadWorld(string seed)
@@ -68,7 +69,54 @@ public partial class GameManager : Node
 			LoadedSaveData.Seed = CurrentSeed;
 			LoadedSaveData.GameMode = GameMode;
 			LoadedSaveData.CurrentMapIndex = CurrentMapIndex;
+			JobSystem.InitializeJobData(LoadedSaveData);
 			SaveManager.SaveGame(LoadedSaveData);
 		}
+	}
+
+	public int GainJobXP(string job, int xp)
+	{
+		if (LoadedSaveData == null)
+		{
+			return 0;
+		}
+
+		JobSystem.InitializeJobData(LoadedSaveData);
+		int newLevel = JobSystem.GainJobXP(LoadedSaveData, job, xp);
+		SaveCurrentGameState();
+		return newLevel;
+	}
+
+	public bool ActivateJob(string job)
+	{
+		if (LoadedSaveData == null)
+		{
+			return false;
+		}
+
+		LoadedSaveData.ActiveJob = job;
+		SaveCurrentGameState();
+		return true;
+	}
+
+	public bool CanCreateRon()
+	{
+		if (LoadedSaveData == null)
+		{
+			return true;
+		}
+
+		return JobSystem.CanCreateRon(LoadedSaveData);
+	}
+
+	public void RecordRonCreation()
+	{
+		if (LoadedSaveData == null)
+		{
+			return;
+		}
+
+		JobSystem.RecordRonCreation(LoadedSaveData);
+		SaveCurrentGameState();
 	}
 }

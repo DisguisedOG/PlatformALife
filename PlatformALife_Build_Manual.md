@@ -102,8 +102,8 @@ NPCs simulate a living multiplayer environment natively on the Host's machine.
 Combat is real-time, fast-paced (MapleStory-style) featuring jump-attacks, AoE mobbing, a quick-slot hotbar, and damage numbers.
 
 ### The Hall of Champions
-* **Classes:** Warrior (Melee/Tank), Archer (Ranged/Kite), Bandit (Fast/Stealth), Healer (Support).
-* **Progression:** Players receive 3 starter skills. New skills are unlocked via ClassLEVEL and purchased with Cash from Class Trainers.
+* **Jobs:** Warrior (Melee/Tank), Archer (Ranged/Kite), Bandit (Fast/Stealth), Healer (Support).
+* **Progression:** Players receive 3 starter skills. New skills are unlocked via Job Level and purchased with Cash from Job Trainers.
 
 ### AI Party System
 * Players can hire AI Champions for a fee to fight alongside them in dungeons and overworld zones.
@@ -113,7 +113,7 @@ When a player or AI Champion reaches 0 HP, they enter a Downed State.
 
 ### Death Options
 1. **Call for Doctor (SOS Beacon):** Player waits. An AI Doctor (or Player Doctor) navigates the 2D world to reach them. The Doctor completes a triage minigame to revive the player. The revived player keeps their inventory but pays a moderate medical fee.
-2. **Force Respawn:** Player spawns at the Hospital. Incurs an "Expensive Fee" (massive Cash loss and potential ClassLEVEL EXP loss).
+2. **Force Respawn:** Player spawns at the Hospital. Incurs an "Expensive Fee" (massive Cash loss and potential Job Level EXP loss).
 
 ## 10. Co-Op Save Data Rules (Host Configurable)
 When launching a multiplayer server, the Host toggles "Allow Character Import."

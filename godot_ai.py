@@ -2936,12 +2936,20 @@ Examples:
         if not Confirm.ask("Continue anyway?", default=True):
             sys.exit(0)
 
+    settings = _load_settings()
+
     if args.host:
         ollama_host = args.host
+        settings["ollama_host"] = ollama_host
+        _save_settings(settings)
     elif os.environ.get("OLLAMA_HOST"):
         ollama_host = os.environ["OLLAMA_HOST"]
+    elif settings.get("ollama_host"):
+        ollama_host = settings["ollama_host"]
     else:
         ollama_host = Prompt.ask("🖥  Ollama host", default="http://localhost:11434")
+        settings["ollama_host"] = ollama_host
+        _save_settings(settings)
 
     repl(project_path, ollama_host, git_enabled=not args.no_git)
 

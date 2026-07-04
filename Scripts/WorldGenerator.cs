@@ -394,6 +394,7 @@ public partial class WorldGenerator : Node
             int pY = FindFloorY(-MapWidth / 2 + 3);
             leftPortal.GlobalPosition = new Vector2((-MapWidth / 2 + 3) * tilePixels, pY * tilePixels);
             AddChild(leftPortal);
+            AssetValidator.ValidatePortal(leftPortal);
         }
 
         if (mapIndex < 5)
@@ -404,6 +405,7 @@ public partial class WorldGenerator : Node
             int pY = FindFloorY(MapWidth / 2 - 3);
             rightPortal.GlobalPosition = new Vector2((MapWidth / 2 - 3) * tilePixels, pY * tilePixels);
             AddChild(rightPortal);
+            AssetValidator.ValidatePortal(rightPortal);
         }
 
         if (mapIndex == 0 && ShopkeeperScene != null)

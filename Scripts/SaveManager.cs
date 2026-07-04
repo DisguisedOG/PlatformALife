@@ -25,6 +25,17 @@ public class SaveData
     public float PositionX { get; set; } = 0;
     public float PositionY { get; set; } = 0;
     
+    // Starter beneficiary / job selection
+    public string ActiveBeneficiary { get; set; } = "None";
+    public string ActiveJob { get; set; } = "None";
+    public Dictionary<string, int> JobXP { get; set; } = new Dictionary<string, int>();
+    public Dictionary<string, int> JobLevels { get; set; } = new Dictionary<string, int>();
+    public Dictionary<string, List<string>> JobSkills { get; set; } = new Dictionary<string, List<string>>();
+
+    // Ron creation lockout data
+    public bool IsRonCreated { get; set; } = false;
+    public string RonCreationDate { get; set; } = "";
+
     // Flag to know if this is a brand new world or an existing one
     public bool HasCharacter { get; set; } = false;
 
