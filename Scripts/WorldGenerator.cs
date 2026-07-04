@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 public partial class WorldGenerator : Node
 {
@@ -37,10 +38,27 @@ public partial class WorldGenerator : Node
     [Export]
     public int SurfaceLevel { get; set; } = 20;
 
+    [Export]
+    public int MapWidthInChunks { get; set; } = 15;
+
+    [Export]
+    public int ChunkWidthInTiles { get; set; } = 16;
+
     public enum BiomeType { Plains, Highlands, Canyons, Tropics }
+    public enum ChunkType
+    {
+        Baseline,
+        Verticality,
+        Friction
+    }
+
     public BiomeType CurrentBiome { get; private set; }
 
     private RandomNumberGenerator rng;
+    private Random _flowRng;
+    private ChunkType _previousChunkType = ChunkType.Baseline;
+    private Dictionary<string, object> _worldStateObject = new Dictionary<string, object>();
+    private List<string> _chunkSequenceLog = new List<string>();
     
     private Vector2I PLATFORM_ATLAS_POS = new Vector2I(1, 0); 
     private Vector2I FLOOR_ATLAS_POS = new Vector2I(1, 1); 
@@ -225,164 +243,31 @@ public partial class WorldGenerator : Node
             }
         }
 
-        // 2. Walker Algorithm for Main Path
-        int currentX = -MapWidth / 2;
-        int endX = MapWidth / 2;
-        int currentY = SurfaceLevel - 3;
-        int lastSegmentType = 0; // 0 = Flat, 1 = Ramp, 2 = Gap
-        
-        while (currentX < endX)
+        // 2. Procedural flow pipeline for main path
+        int currentTileX = -MapWidth / 2;
+        int lastExitHeight = SurfaceLevel - 3;
+        int chunkCount = Mathf.Max(1, Mathf.RoundToInt((float)MapWidth / Mathf.Max(1, ChunkWidthInTiles)) + 1);
+        chunkCount = Mathf.Min(chunkCount, MapWidthInChunks > 0 ? MapWidthInChunks : chunkCount);
+
+        _flowRng = new Random(GetDeterministicHashCode($"{baseSeed}_{mapIndex}_flow"));
+        _worldStateObject.Clear();
+        _chunkSequenceLog.Clear();
+        _previousChunkType = ChunkType.Baseline;
+
+        for (int i = 0; i < chunkCount; i++)
         {
-            float action = rng.Randf();
-            int segmentLength;
-            
-            // Default probabilities (Plains)
-            float flatChance = 0.8f;
-            float rampChance = 0.1f;
-            float upperDeckChance = 0.2f;
-            int maxLadders = 2;
-
-            if (CurrentBiome == BiomeType.Highlands)
-            {
-                flatChance = 0.3f;
-                rampChance = 0.6f;
-                upperDeckChance = 0.6f;
-                maxLadders = 5;
-            }
-            else if (CurrentBiome == BiomeType.Canyons)
-            {
-                flatChance = 0.4f;
-                rampChance = 0.2f;
-                upperDeckChance = 0.3f;
-                maxLadders = 3;
-            }
-
-            bool forceFlat = (currentX < -MapWidth/2 + 10) || (currentX > endX - 10) || (currentX > -5 && currentX < 5) || lastSegmentType != 0;
-
-            if (forceFlat || action < flatChance) // Flat Path
-            {
-                segmentLength = rng.RandiRange(6, 15);
-                if (currentX + segmentLength > endX) segmentLength = endX - currentX;
-
-                bool hasConstructionZone = !forceFlat && (rng.Randf() < 0.05f) && ConstructionZoneScene != null;
-                
-                int specialX = currentX + rng.RandiRange(2, segmentLength - 3);
-
-                for (int i = 0; i < segmentLength; i++)
-                {
-                    int bRow = PLATFORM_ATLAS_POS.Y;
-                    Vector2I platformTile = new Vector2I(1, bRow);
-                    if (i == 0) platformTile = new Vector2I(0, bRow);
-                    else if (i == segmentLength - 1) platformTile = new Vector2I(2, bRow);
-
-                    TerrainLayer.SetCell(new Vector2I(currentX + i, currentY), 0, platformTile);
-                    for (int fy = currentY + 1; fy <= SurfaceLevel; fy++)
-                    {
-                        TerrainLayer.SetCell(new Vector2I(currentX + i, fy), 0, FLOOR_ATLAS_POS);
-                    }
-                    
-                    if (hasConstructionZone && currentX + i == specialX)
-                    {
-                        var cz = ConstructionZoneScene.Instantiate<ConstructionZone>();
-                        cz.GlobalPosition = new Vector2((currentX + i) * 32.0f + 16.0f, currentY * 32.0f);
-                        AddChild(cz);
-                    }
-                        else if (!hasConstructionZone && !forceFlat && rng.Randf() < 0.2f && ResourceNodeScene != null)
-                        {
-                            var resNode = ResourceNodeScene.Instantiate<ResourceNode>();
-                            // Give it random resources based on biome
-                            if (CurrentBiome == BiomeType.Highlands) { 
-                                resNode.ResourceName = "Stone"; 
-                                resNode.GoldValue = 10; 
-                                resNode.GetNode<Sprite2D>("Sprite2D").Texture = ResourceLoader.Load<Texture2D>("res://Assets/Sprites/Resource_Stone.png"); 
-                            }
-                            else if (CurrentBiome == BiomeType.Plains) { 
-                                resNode.ResourceName = "Wood"; 
-                                resNode.GoldValue = 5; 
-                                resNode.GetNode<Sprite2D>("Sprite2D").Texture = ResourceLoader.Load<Texture2D>("res://Assets/Sprites/Resource_Wood.png"); 
-                            }
-                            else { 
-                                resNode.ResourceName = "Clay"; 
-                                resNode.GoldValue = 8; 
-                                resNode.GetNode<Sprite2D>("Sprite2D").Texture = ResourceLoader.Load<Texture2D>("res://Assets/Sprites/Resource_Clay.png"); 
-                            }
-                            
-                            resNode.GlobalPosition = new Vector2((currentX + i) * 32.0f + 16.0f, currentY * 32.0f + 16.0f);
-                            AddChild(resNode);
-                        }
-                        else if (!hasConstructionZone && !forceFlat && rng.Randf() < 0.35f)
-                        {
-                            string[] foliageNames = { "Foliage_Fern", "Foliage_Kauri", "Foliage_CabbageTree", "Foliage_Flax" };
-                            string randomFoliage = foliageNames[rng.RandiRange(0, foliageNames.Length - 1)];
-                            var tex = ResourceLoader.Load<Texture2D>($"res://Assets/Sprites/Foliage/{randomFoliage}.png");
-                            if (tex != null)
-                            {
-                                var sprite = new Sprite2D();
-                                sprite.Texture = tex;
-                                float grassTop = currentY * 32.0f + 16.0f;
-                                sprite.GlobalPosition = new Vector2((currentX + i) * 32.0f + 16.0f, grassTop - tex.GetHeight() / 2.0f);
-                                // Ensure it renders behind characters
-                                sprite.ZIndex = -1;
-                                AddChild(sprite);
-                            }
-                        }
-                }
-
-                if (rng.Randf() < upperDeckChance && segmentLength >= 6 && currentY > SurfaceLevel - 6 && !forceFlat)
-                {
-                    GenerateUpperDeck(currentX, currentY, segmentLength, maxLadders);
-                }
-
-                currentX += segmentLength;
-                lastSegmentType = 0;
-            }
-            else if (action < flatChance + rampChance) // Ramp (Staircase)
-            {
-                segmentLength = rng.RandiRange(3, 7);
-                if (currentX + segmentLength > endX) segmentLength = endX - currentX;
-                
-                int yDir = 0;
-                if (currentY <= SurfaceLevel - 6) yDir = 1; 
-                else if (currentY >= SurfaceLevel - 2) yDir = -1; 
-                else yDir = rng.Randf() < 0.5f ? -1 : 1; 
-
-                for (int i = 0; i < segmentLength; i++)
-                {
-                    int bRow = PLATFORM_ATLAS_POS.Y;
-                    Vector2I platformTile = new Vector2I(1, bRow);
-                    if (i == 0) platformTile = new Vector2I(0, bRow);
-                    else if (i == segmentLength - 1) platformTile = new Vector2I(2, bRow);
-
-                    TerrainLayer.SetCell(new Vector2I(currentX + i, currentY), 0, platformTile);
-                    for (int fy = currentY + 1; fy <= SurfaceLevel; fy++)
-                    {
-                        TerrainLayer.SetCell(new Vector2I(currentX + i, fy), 0, FLOOR_ATLAS_POS);
-                    }
-                    if (i % 2 == 0) currentY += yDir;
-                    currentY = Mathf.Clamp(currentY, SurfaceLevel - 6, SurfaceLevel - 2);
-                }
-                currentX += segmentLength;
-                lastSegmentType = 1;
-            }
-            else // Jump Gap
-            {
-                segmentLength = rng.RandiRange(1, 2); 
-                if (currentX + segmentLength > endX) segmentLength = endX - currentX;
-                
-                for (int i = 0; i < segmentLength; i++)
-                {
-                    // Draw a 2-tile deep pit, then fill the rest with solid floor to the boundary
-                    for (int fy = currentY + 3; fy <= SurfaceLevel; fy++)
-                    {
-                        TerrainLayer.SetCell(new Vector2I(currentX + i, fy), 0, FLOOR_ATLAS_POS);
-                    }
-                }
-                
-                currentX += segmentLength;
-                lastSegmentType = 2;
-            }
+            ChunkType nextChunk = ChooseFlowValidatedChunk(i);
+            _chunkSequenceLog.Add($"Chunk_{i}_{nextChunk}_{CurrentBiome}");
+            lastExitHeight = BuildChunkGeometry(nextChunk, CurrentBiome, currentTileX, lastExitHeight);
+            currentTileX += ChunkWidthInTiles;
         }
-        
+
+        _worldStateObject["ChunkLayoutSequence"] = _chunkSequenceLog;
+        _worldStateObject["GenerationTimestamp"] = Time.GetUnixTimeFromSystem();
+        _worldStateObject["MapSeed"] = mapSeedString;
+        _worldStateObject["Biome"] = CurrentBiome.ToString();
+        GD.Print($"[WorldGenerator] Generation manifest complete: {JsonSerializer.Serialize(_worldStateObject)}");
+
         // 3. Setup Portals and Edge spawn logic
         float tilePixels = 32.0f;
         
@@ -425,6 +310,95 @@ public partial class WorldGenerator : Node
         }
 
         SpawnSavedStructures(mapIndex);
+    }
+
+    private ChunkType ChooseFlowValidatedChunk(int chunkIndex)
+    {
+        if (chunkIndex == 0)
+        {
+            _previousChunkType = ChunkType.Baseline;
+            return ChunkType.Baseline;
+        }
+
+        if (_previousChunkType == ChunkType.Friction && _flowRng.Next(0, 100) < 60)
+        {
+            _previousChunkType = ChunkType.Baseline;
+            return ChunkType.Baseline;
+        }
+
+        int roll = _flowRng.Next(0, 100);
+        ChunkType chosen;
+        if (roll < 50)
+        {
+            chosen = ChunkType.Baseline;
+        }
+        else if (roll < 85)
+        {
+            chosen = ChunkType.Verticality;
+        }
+        else
+        {
+            chosen = ChunkType.Friction;
+        }
+
+        _previousChunkType = chosen;
+        return chosen;
+    }
+
+    private int BuildChunkGeometry(ChunkType type, BiomeType biome, int startX, int startY)
+    {
+        int localHeight = startY;
+        int atlasRow = Mathf.Max(0, PLATFORM_ATLAS_POS.Y);
+
+        for (int x = 0; x < ChunkWidthInTiles; x++)
+        {
+            int globalX = startX + x;
+            Vector2I terrainTile = new Vector2I(1, atlasRow);
+            Vector2I fillTile = new Vector2I(3, atlasRow);
+            Vector2I deepTile = new Vector2I(4, atlasRow);
+
+            switch (type)
+            {
+                case ChunkType.Baseline:
+                    if (x % 4 == 0)
+                    {
+                        localHeight += _flowRng.Next(-1, 2);
+                    }
+                    localHeight = Mathf.Clamp(localHeight, SurfaceLevel - 6, SurfaceLevel - 1);
+                    terrainTile = new Vector2I(1, atlasRow);
+                    break;
+
+                case ChunkType.Verticality:
+                    if (x % 3 == 0)
+                    {
+                        localHeight -= 2;
+                    }
+                    localHeight = Mathf.Clamp(localHeight, SurfaceLevel - 8, SurfaceLevel - 1);
+                    terrainTile = new Vector2I(1, atlasRow);
+                    break;
+
+                case ChunkType.Friction:
+                    localHeight = Mathf.Clamp(localHeight, SurfaceLevel - 5, SurfaceLevel - 1);
+                    terrainTile = new Vector2I(4, atlasRow);
+                    TerrainLayer.SetCell(new Vector2I(globalX, localHeight - 3), 0, new Vector2I(1, atlasRow));
+                    break;
+            }
+
+            TerrainLayer.SetCell(new Vector2I(globalX, localHeight), 0, terrainTile);
+            for (int fillY = localHeight + 1; fillY <= SurfaceLevel; fillY++)
+            {
+                if (fillY <= SurfaceLevel - 2)
+                {
+                    TerrainLayer.SetCell(new Vector2I(globalX, fillY), 0, fillTile);
+                }
+                else
+                {
+                    TerrainLayer.SetCell(new Vector2I(globalX, fillY), 0, deepTile);
+                }
+            }
+        }
+
+        return localHeight;
     }
 
     private void SpawnInitialPlayers(Node2D playersNode, PackedScene playerScene)

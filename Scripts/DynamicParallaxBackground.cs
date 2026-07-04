@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class DynamicParallaxBackground : ParallaxBackground
+public partial class DynamicParallaxBackground : Node2D
 {
     private const float SCALE_FACTOR = 4.0f;
     private const float IMAGE_WIDTH = 288f;
@@ -55,8 +55,8 @@ public partial class DynamicParallaxBackground : ParallaxBackground
         else if (biomeType == 3) layersToLoad = tropicsLayers; // Tropics (Fishing)
 
         // Add a solid sky color layer at the very back
-        var skyLayer = new ParallaxLayer();
-        skyLayer.MotionScale = new Vector2(0, 0);
+        var skyLayer = new Parallax2D();
+        skyLayer.ScrollScale = new Vector2(0, 0);
         var skyRect = new ColorRect();
         skyRect.Size = new Vector2(4000, 4000);
         skyRect.Position = new Vector2(-2000, -2000);
@@ -75,9 +75,10 @@ public partial class DynamicParallaxBackground : ParallaxBackground
         {
             float motionScale = (i == 0) ? 0.0f : (i * layerStep);
             
-            var layer = new ParallaxLayer();
-            layer.MotionScale = new Vector2(motionScale, 0.0f); // Lock Y so it never shows void
-            layer.MotionMirroring = new Vector2(IMAGE_WIDTH * SCALE_FACTOR, 0);
+            var layer = new Parallax2D();
+            layer.ScrollScale = new Vector2(motionScale, 0.0f); // Lock Y so it never shows void
+            layer.RepeatSize = new Vector2(IMAGE_WIDTH * SCALE_FACTOR, 0);
+            layer.RepeatTimes = 2;
             
             var sprite = new Sprite2D();
             sprite.Texture = GD.Load<Texture2D>(layersToLoad[i]);
