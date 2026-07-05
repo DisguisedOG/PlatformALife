@@ -10,6 +10,7 @@ size = Vector2(64, 128)
 collision_layer = 0
 collision_mask = 1
 script = ExtResource("1_scr")
+z_index = -1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -64)
@@ -19,3 +20,4 @@ shape = SubResource("RectangleShape2D_prtl")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("3_tex")
 offset = Vector2(0, -64)
+z_index = -1

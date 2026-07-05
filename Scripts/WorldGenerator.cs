@@ -59,6 +59,7 @@ public partial class WorldGenerator : Node
     private ChunkType _previousChunkType = ChunkType.Baseline;
     private Dictionary<string, object> _worldStateObject = new Dictionary<string, object>();
     private List<string> _chunkSequenceLog = new List<string>();
+    private const float TilePixels = 32.0f;
     
     private Vector2I PLATFORM_ATLAS_POS = new Vector2I(1, 0); 
     private Vector2I FLOOR_ATLAS_POS = new Vector2I(1, 1); 
@@ -385,6 +386,10 @@ public partial class WorldGenerator : Node
             }
 
             TerrainLayer.SetCell(new Vector2I(globalX, localHeight), 0, terrainTile);
+            if (type == ChunkType.Baseline && x % 4 == 0 && _flowRng.NextDouble() < 0.18)
+            {
+                SpawnResourceNode(globalX, localHeight);
+            }
             for (int fillY = localHeight + 1; fillY <= SurfaceLevel; fillY++)
             {
                 if (fillY <= SurfaceLevel - 2)
@@ -504,6 +509,22 @@ public partial class WorldGenerator : Node
             // Only generate the 1-way platform so players can jump through it and walk under it!
             TerrainLayer.SetCell(new Vector2I(startX + i, deckY), 0, platformTile);
         }
+    }
+
+    private void SpawnResourceNode(int tileX, int tileY)
+    {
+        if (ResourceNodeScene == null)
+        {
+            return;
+        }
+
+        var node = ResourceNodeScene.Instantiate<ResourceNode>();
+        bool isStone = _flowRng.NextDouble() < 0.35;
+        node.SetResourceType(isStone ? ResourceNode.ResourceType.Stone : ResourceNode.ResourceType.Wood);
+        node.ZIndex = -5;
+
+        node.GlobalPosition = new Vector2(tileX * TilePixels, tileY * TilePixels);
+        AddChild(node);
     }
 
     private int FindFloorY(int xCoord)
