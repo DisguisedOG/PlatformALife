@@ -10,16 +10,29 @@
 [ext_resource type="PackedScene" uid="uid://buildui123" path="res://Scenes/BuildUI.tscn" id="10_build"]
 [ext_resource type="PackedScene" uid="uid://df7xxy7waab4" path="res://Scenes/ParallaxBackground.tscn" id="bg_scene"]
 [ext_resource type="Texture2D" path="res://Assets/trytilerealistic_atlas.png" id="2_tiles"]
-[ext_resource type="Script" path="res://Scripts/WorldGenerator.cs" id="3_wg"]
+[ext_resource type="Script" path="res://Scripts/LevelManager.cs" id="3_lm"]
 [ext_resource type="TileSet" uid="uid://c3q8f8x33abc" path="res://Assets/AorakiTileSet.tres" id="4_aoraki"]
 
 [node name="World" type="Node2D"]
 
+[node name="SkyLayer" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="SkyColor" type="ColorRect" parent="SkyLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.42, 0.75, 1, 1)
+
 [node name="ParallaxBackground" parent="." instance=ExtResource("bg_scene")]
 
-[node name="WorldGenerator" type="Node" parent="." node_paths=PackedStringArray("TerrainLayer")]
-script = ExtResource("3_wg")
-TerrainLayer = NodePath("../TileMapLayer")
+[node name="LevelManager" type="Node" parent="."]
+script = ExtResource("3_lm")
+
+[node name="LevelContainer" type="Node2D" parent="."]
 
 [node name="Players" type="Node2D" parent="."]
 
@@ -27,12 +40,9 @@ TerrainLayer = NodePath("../TileMapLayer")
 spawn_path = NodePath("../Players")
 spawn_limit = 4
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
-tile_set = ExtResource("4_aoraki")
 
-[node name="FloatingCamera" type="Camera2D" parent="."]
-zoom = Vector2(1.5, 1.5)
-position = Vector2(0, 0)
+
+
 
 [node name="MapUI" parent="." instance=ExtResource("4_mapui")]
 

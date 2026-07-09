@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://lvl_whangarei_01"]
+
+[ext_resource type="TileSet" uid="uid://c3q8f8x33abc" path="res://Assets/AorakiTileSet.tres" id="1_tileset"]
+
+[node name="Level_Whangarei_Heads_01" type="Node2D"]
+editor_description = "Zone: Whangarei Heads (Highlands / Perion-style hub)"
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("1_tileset")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(-500, 0, 500, 0, 500, 100, -500, 100)

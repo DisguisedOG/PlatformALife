@@ -55,7 +55,7 @@ public partial class BuildUI : CanvasLayer
                 });
                 
                 // Tell WorldGenerator to spawn it now
-                var wg = GetTree().Root.GetNodeOrNull<WorldGenerator>("World/WorldGenerator");
+                var wg = GetTree().Root.GetNodeOrNull<LevelManager>("World/LevelManager");
                 if (wg != null)
                 {
                     wg.SpawnStructure("House", currentZone.GlobalPosition);

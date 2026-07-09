@@ -17,9 +17,9 @@ func _init():
     source.texture = atlas_texture
     source.texture_region_size = Vector2i(32, 32)
     
-    # Grass Platform (3x3)
+    # Grass Platform
     for x in range(3):
-        for y in range(3):
+        for y in range(4):
             _create_tile_if_valid(source, Vector2i(x, y), columns, rows)
             if y == 0 and _has_tile(source, Vector2i(x, y)):
                 var poly = PackedVector2Array([Vector2(-16, -16), Vector2(16, -16), Vector2(16, 16), Vector2(-16, 16)])
@@ -28,9 +28,9 @@ func _init():
                 data.add_collision_polygon(0)
                 data.set_collision_polygon_points(0, 0, poly)
 
-    # Dirt Platform (3x3) starts at x=3
+    # Dirt Platform starts at x=3
     for x in range(3, 5):
-        for y in range(3):
+        for y in range(4):
             _create_tile_if_valid(source, Vector2i(x, y), columns, rows)
             if _has_tile(source, Vector2i(x, y)):
                 var poly = PackedVector2Array([Vector2(-16, -16), Vector2(16, -16), Vector2(16, 16), Vector2(-16, 16)])

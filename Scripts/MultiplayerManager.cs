@@ -71,7 +71,7 @@ public partial class MultiplayerManager : Node
     public void JoinGame(string ipAddress)
     {
         PendingJoinIp = ipAddress;
-        GameManager.Instance.LoadWorld("MultiplayerTest", 0, 0);
+        GameManager.Instance.LoadWorld(0, 0);
     }
 
     private void OnPeerConnected(long id)
@@ -88,7 +88,7 @@ public partial class MultiplayerManager : Node
                 var player = playerScene.Instantiate<PixelMan>();
                 player.Name = id.ToString();
                 
-                var worldGen = GetTree().Root.GetNodeOrNull<WorldGenerator>("World/WorldGenerator");
+                var worldGen = GetTree().Root.GetNodeOrNull<LevelManager>("World/LevelManager");
                 if (worldGen != null)
                 {
                     player.GlobalPosition = worldGen.GetSpawnPosition(0);

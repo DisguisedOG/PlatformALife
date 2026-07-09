@@ -36,7 +36,7 @@ public partial class CharacterCreationMenu : CanvasLayer
             // Spawn at exact saved position if available, otherwise use worldgen
             // Wait, we just use worldGen.GetSpawnPosition for now unless we pass the position!
             // Let's pass the position from the data!
-            var worldGen = GetNodeOrNull<WorldGenerator>("../WorldGenerator");
+            var worldGen = GetNodeOrNull<LevelManager>("../LevelManager");
             if (worldGen != null)
             {
                 player.GlobalPosition = worldGen.GetSpawnPosition(GameManager.Instance.SpawnDirection);
@@ -63,12 +63,10 @@ public partial class CharacterCreationMenu : CanvasLayer
         // Hide UI
         this.Visible = false;
 
-        // Ensure SaveData exists for this new character
         if (GameManager.Instance.LoadedSaveData == null)
         {
             GameManager.Instance.LoadedSaveData = new SaveData();
             GameManager.Instance.LoadedSaveData.WorldName = GameManager.Instance.WorldName;
-            GameManager.Instance.LoadedSaveData.Seed = GameManager.Instance.CurrentSeed;
             GameManager.Instance.LoadedSaveData.GameMode = GameManager.Instance.GameMode;
         }
 
@@ -91,7 +89,7 @@ public partial class CharacterCreationMenu : CanvasLayer
             player.HairStyle = GetNode<OptionButton>("Panel/VBoxContainer/HairOption").Text;
             
             // Find WorldGenerator to position player
-            var worldGen = GetNodeOrNull<WorldGenerator>("../WorldGenerator");
+            var worldGen = GetNodeOrNull<LevelManager>("../LevelManager");
             if (worldGen != null)
             {
                 player.GlobalPosition = worldGen.GetSpawnPosition(GameManager.Instance.SpawnDirection);

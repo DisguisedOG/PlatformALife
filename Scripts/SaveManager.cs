@@ -14,7 +14,6 @@ public class StructureData
 public class SaveData
 {
     public string WorldName { get; set; } = "Default World";
-    public string Seed { get; set; } = "";
     public int GameMode { get; set; } = 0;
 
     public string CharacterName { get; set; } = "Player";

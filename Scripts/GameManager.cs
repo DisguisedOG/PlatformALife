@@ -9,7 +9,6 @@ public partial class GameManager : Node
 	
 	public string WorldName { get; set; } = "Default World";
 	public int GameMode { get; set; } = 0;
-	public string CurrentSeed { get; set; } = "";
 	public int CurrentMapIndex { get; set; } = 0;
 	public int PreviousMapIndex { get; set; } = 0;
 
@@ -29,20 +28,18 @@ public partial class GameManager : Node
 		JobSystem.InitializeJobData(LoadedSaveData);
 	}
 
-	public async void LoadWorld(string seed)
+	public async void LoadWorld()
 	{
-		GD.Print($"Loading World with seed: {seed}");
-		CurrentSeed = seed;
+		GD.Print($"Loading World");
 		if (ScreenFader.Instance != null) await ScreenFader.Instance.WaitForFadeOut();
 		GetTree().ChangeSceneToFile("res://Scenes/World.tscn");
 	}
 
-	public async void LoadWorld(string seed, int mapIndex, int spawnDir)
+	public async void LoadWorld(int mapIndex, int spawnDir)
 	{
-		CurrentSeed = seed;
 		CurrentMapIndex = mapIndex;
 		SpawnDirection = spawnDir;
-		GD.Print($"Loading World with seed: {seed}, map: {mapIndex}");
+		GD.Print($"Loading World with map index: {mapIndex}");
 		if (ScreenFader.Instance != null) await ScreenFader.Instance.WaitForFadeOut();
 		GetTree().ChangeSceneToFile("res://Scenes/World.tscn");
 	}
@@ -58,7 +55,7 @@ public partial class GameManager : Node
 	public void ReturnToWorld()
 	{
 		GD.Print($"Returning to World map: {PreviousMapIndex}");
-		LoadWorld(CurrentSeed, PreviousMapIndex, 0);
+		LoadWorld(PreviousMapIndex, 0);
 	}
 
 	public void SaveCurrentGameState()
@@ -66,7 +63,6 @@ public partial class GameManager : Node
 		if (LoadedSaveData != null)
 		{
 			LoadedSaveData.WorldName = WorldName;
-			LoadedSaveData.Seed = CurrentSeed;
 			LoadedSaveData.GameMode = GameMode;
 			LoadedSaveData.CurrentMapIndex = CurrentMapIndex;
 			JobSystem.InitializeJobData(LoadedSaveData);

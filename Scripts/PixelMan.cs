@@ -59,8 +59,10 @@ public partial class PixelMan : CharacterBody2D
         }
         else if (cam != null)
         {
+            cam.MakeCurrent();
+            
             // Set Camera Limits to prevent seeing the void!
-            var worldGen = GetNodeOrNull<WorldGenerator>("../../WorldGenerator");
+            var worldGen = GetNodeOrNull<LevelManager>("../../LevelManager");
             if (worldGen != null)
             {
                 cam.LimitLeft = (-worldGen.MapWidth / 2) * 32;
@@ -248,7 +250,7 @@ public partial class PixelMan : CharacterBody2D
         // Void Fall Respawn
         if (GlobalPosition.Y > 2000)
         {
-            var worldGen = GetNodeOrNull<WorldGenerator>("../WorldGenerator");
+            var worldGen = GetNodeOrNull<LevelManager>("../LevelManager");
             if (worldGen != null)
             {
                 // Respawn at the portal we entered from
@@ -389,7 +391,7 @@ public partial class PixelMan : CharacterBody2D
         
         // Respawn logic (similar to void fall)
         Health = MaxHealth;
-        var worldGen = GetNodeOrNull<WorldGenerator>("../WorldGenerator");
+        var worldGen = GetNodeOrNull<LevelManager>("../LevelManager");
         if (worldGen != null)
         {
             GlobalPosition = worldGen.GetSpawnPosition(GameManager.Instance.SpawnDirection);

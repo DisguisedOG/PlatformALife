@@ -52,7 +52,7 @@ public partial class PauseMenu : CanvasLayer
     {
         string peerId = Multiplayer.HasMultiplayerPeer() ? Multiplayer.GetUniqueId().ToString() : "1";
         var player = GetTree().Root.GetNodeOrNull<PixelMan>("World/Players/" + peerId);
-        var worldGen = GetTree().Root.GetNodeOrNull<WorldGenerator>("World/WorldGenerator");
+        var worldGen = GetTree().Root.GetNodeOrNull<LevelManager>("World/LevelManager");
 
         if (player != null && worldGen != null && GameManager.Instance != null)
         {

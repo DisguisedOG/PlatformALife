@@ -42,8 +42,10 @@ public partial class Portal : Area2D
         if (isPlayerInside && Input.IsActionJustPressed("move_up"))
         {
             GD.Print($"Entering Portal to Map {TargetMapIndex}");
-            GameManager.Instance.SaveCurrentGameState();
-            GameManager.Instance.LoadWorld(GameManager.Instance.CurrentSeed, TargetMapIndex, TravelDirection);
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.LoadWorld(TargetMapIndex, TravelDirection);
+            }
         }
     }
 

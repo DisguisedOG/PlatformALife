@@ -25,6 +25,7 @@ animation = &"idle"
 
 [node name="HairSprite" type="Sprite2D" parent="AnimatedSprite2D"]
 position = Vector2(0, -110)
+scale = Vector2(0.65, 0.65)
 texture = ExtResource("5_hair")
 visible = false
 
