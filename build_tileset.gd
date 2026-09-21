@@ -16,6 +16,8 @@ func _init():
     var source = TileSetAtlasSource.new()
     source.texture = atlas_texture
     source.texture_region_size = Vector2i(32, 32)
+    source.margins = Vector2i(0, 0)
+    source.separation = Vector2i(0, 0)
     
     # Grass Platform
     for x in range(3):
