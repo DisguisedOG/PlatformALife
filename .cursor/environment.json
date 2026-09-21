@@ -1,0 +1,6 @@
+{
+  "name": "Tales of Aotearoa (Godot 4.7 Mono)",
+  "user": "ubuntu",
+  "install": "bash Tools/cloud_agent_setup.sh",
+  "start": "bash Tools/cloud_agent_start.sh"
+}
