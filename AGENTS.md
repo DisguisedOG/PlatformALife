@@ -79,3 +79,21 @@ All tracking, planning, and tasking must be updated continuously by the AI using
 - **Proactive Automation**: Do not ask the user to manually rename assets, recalculate offsets, format configs, or clean folders. Proactively write cross-platform Python scripts (`.py`) to handle repetitive tasks.
 - **Script Directory**: Keep automation utilities in the root directory or a dedicated `Tools/` folder.
 - **Execution Strategy**: When delivering a complex technical fix, provide a companion Python script to automate execution, log tracking, or asset processing steps whenever possible.
+
+---
+
+## ☁️ Cursor Cloud specific instructions
+The primary developer workstation is Windows (see the PowerShell Quick Start commands above), but **Cursor Cloud Agents run on a headless Ubuntu x86_64 VM**. The environment is defined by [.cursor/environment.json](.cursor/environment.json), which runs two committed scripts:
+- **Install** (`bash Tools/cloud_agent_setup.sh`): installs the **.NET 8 SDK**, downloads **Godot 4.7 Mono** for Linux to `/opt/godot` (symlinked to `godot`), installs software GL/Vulkan (Mesa `llvmpipe`/`lavapipe`) plus Xvfb/ffmpeg tooling, runs `dotnet build`, and imports the project (`godot --headless --import`).
+- **Start** (`bash Tools/cloud_agent_start.sh`): launches a virtual X display on `:99` so the game can render and be screen-captured on a GPU-less VM.
+
+### Running & testing on the cloud VM (Linux)
+- **Build C#:** `dotnet build` (equivalent to the Windows command; the `Godot.NET.Sdk` restores from NuGet).
+- **Headless smoke test:** `godot --headless` — confirms autoloads (`GameManager`, `MultiplayerManager`) initialize without parse/script errors.
+- **Rendered run / GUI test:** the Forward+ (Vulkan) renderer needs a GPU, so on the VM use the GL compatibility renderer over software Mesa:
+  ```bash
+  DISPLAY=:99 LIBGL_ALWAYS_SOFTWARE=1 GALLIUM_DRIVER=llvmpipe \
+    godot --rendering-method gl_compatibility --rendering-driver opengl3 --resolution 1280x720 --position 0,0
+  ```
+- **Capture evidence:** screenshot with `DISPLAY=:99 import -window root out.png`; record with `ffmpeg -f x11grab -video_size 1280x720 -i :99+0,0 demo.mp4`.
+- **Expected noise (not failures):** audio falls back to the "dummy" driver (no sound card) and the process prints `Unreferenced static string` / `PagedAllocator` / RID-leak errors *only at shutdown* when killed. `GameplayHUD.cs` currently logs `Node not found` for HUD nodes removed during the bottom-dock refactor — a pre-existing game-code bug, not an environment issue.

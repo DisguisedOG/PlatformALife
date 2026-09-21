@@ -15,10 +15,30 @@
 ## 📋 Immediate TODOs
 - [ ] Paint the new `Level_Highlands_01.tscn` using `AorakiTileSet.tres`.
 - [ ] Verify if the AI-generated player/shopkeeper sprites require a similar Python auto-packing script.
+- [ ] Fix `GameplayHUD.cs` node paths (`HUDControl/StatsPanel/...`) orphaned by the 1080p bottom-dock HUD refactor — they throw `Node not found` on world load.
 
 ---
 
 ## 🛠️ Completion Log
+
+### Date: September 21, 2026
+**Role:** Lead Game Developer / DevEx
+**What was completed:**
+1. **Cloud Agent Environment:** Added [.cursor/environment.json](.cursor/environment.json) plus idempotent [Tools/cloud_agent_setup.sh](Tools/cloud_agent_setup.sh) (install) and [Tools/cloud_agent_start.sh](Tools/cloud_agent_start.sh) (start) so the project is buildable and runnable on a headless Ubuntu x86_64 cloud VM.
+2. **Toolchain:** Install script provisions the .NET 8 SDK, downloads Godot 4.7 Mono (Linux) to `/opt/godot`, installs software GL/Vulkan (Mesa `llvmpipe`/`lavapipe`) + Xvfb/ffmpeg, then runs `dotnet build` and `godot --headless --import`.
+3. **End-to-End Verification:** Booted the game on virtual display `:99` via the GL compatibility renderer and confirmed the full flow — Main Menu → Start Game → World load → "Create Your Character" → player spawns and walks — with screenshots and a screen recording.
+4. **Docs:** Added a "Cursor Cloud specific instructions" section to `AGENTS.md` documenting the Linux build/run/test commands and expected log noise.
+
+**Why it was done:**
+The repo's dev setup was Windows/Godot-editor only, so Cloud Agents had no way to build, run, or test the game. This gives agents a reproducible headless Linux environment.
+
+**Technical Hurdles Discovered:**
+- The project's default **Forward+ (Vulkan)** renderer cannot initialize on a GPU-less VM; running with `--rendering-method gl_compatibility` over Mesa `llvmpipe` (`LIBGL_ALWAYS_SOFTWARE=1`) is required for rendered runs.
+- `GameplayHUD.cs` references HUD nodes (`HUDControl/StatsPanel/VBox/...`) that no longer exist after the bottom-dock HUD refactor, spamming `Node not found` on world load. The game still runs; logged above as a TODO to fix.
+
+---
+
+## 🛠️ Prior Completion Log
 
 ### Date: July 9, 2026 (Phase 3)
 **Role:** UI/UX & GFX Designer
