@@ -16,9 +16,23 @@
 - [ ] Paint the new `Level_Highlands_01.tscn` using `AorakiTileSet.tres`.
 - [ ] Verify if the AI-generated player/shopkeeper sprites require a similar Python auto-packing script.
 
----
+### Date: September 21, 2026
+**Role:** Lead Game Developer & GFX
+**What was completed:**
+1. **TileMap gutter fix:** Rebuilt `Assets/AorakiAtlas.png` so every terrain cell is a flush 32×32 opaque tile. The previous packer resized whole magenta concept-sheet cells (gutters included), which left 6–8px transparent margins and visible cracks in `Level_Waiheke_01`.
+2. **Packer rewrite:** `process_ai_atlas.py` now chroma-keys magenta/JPEG fringe, tight-crops opaque artwork, nearest-neighbour scales to fill the cell, and strips the 1px concept-sheet outline. Fill rows use mid-dirt / rock interiors so underground tiles no longer repeat a grass cap.
+3. **Tileset metadata:** `build_tileset.gd` and `AorakiTileSet.tres` now set atlas `margins` and `separation` to `(0, 0)`.
+4. **Automation:** Added `Tools/verify_atlas_margins.py` to fail if any atlas tile still has transparent edges.
 
-## 🛠️ Completion Log
+**Why it was done:**
+User report that the tile map had terrible margins. Waiheke paints atlas `(1,0)` / `(1,1)` across the ground, so inset tiles produced a grid of gaps.
+
+**Technical Hurdles Discovered:**
+- Source `AorakiAtlas.jpeg` is 2752×1536 with ~56px magenta gutters around each tile. Crop windows that started at `(0,0)` baked those gutters into the 32×32 atlas.
+- JPEG compression turns the magenta matte into dark purple edge pixels; a simple `r>180 && g<100 && b>180` key is not enough.
+- LANCZOS downscale blended matte fringe into semi-transparent tile edges; nearest-neighbour plus edge extend is required for pixel-art terrain.
+
+---
 
 ### Date: July 9, 2026 (Phase 3)
 **Role:** UI/UX & GFX Designer
